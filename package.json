@@ -78,6 +78,7 @@
   },
   "overrides": {
     "react-day-picker": {
+      "react": "^19.0.0",
       "date-fns": "^4.1.0"
     }
   }
