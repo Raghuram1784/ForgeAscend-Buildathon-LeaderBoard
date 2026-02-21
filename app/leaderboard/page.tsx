@@ -64,14 +64,14 @@ export default function LeaderboardPage() {
 
           if (values[nameIdx]) {
             parsedTeams.push({
-              rank: i,
+              rank: 0,
               name: values[nameIdx] || '',
               cp1: parseFloat(values[cp1Idx]) || 0,
               cp2: parseFloat(values[cp2Idx]) || 0,
               cp3: parseFloat(values[cp3Idx]) || 0,
               cp4: parseFloat(values[cp4Idx]) || 0,
               total: parseFloat(values[totalIdx]) || 0,
-              medal: getMedalIcon(i)
+              medal: ''
             })
           }
         }
@@ -85,6 +85,7 @@ export default function LeaderboardPage() {
 
         setTeams(parsedTeams)
         setLoading(false)
+        setError(null)
       } catch (err) {
         console.error('[v0] Leaderboard fetch error:', err)
         setError('Failed to load leaderboard data')
@@ -93,6 +94,8 @@ export default function LeaderboardPage() {
     }
 
     fetchLeaderboard()
+    const interval = setInterval(fetchLeaderboard, 30000)
+    return () => clearInterval(interval)
   }, [])
 
   return (
