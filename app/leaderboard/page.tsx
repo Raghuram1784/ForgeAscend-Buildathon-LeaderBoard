@@ -16,10 +16,6 @@ interface TeamData {
   cp2: number
   cp3: number
   cp4: number
-  cp5: number
-  cp6: number
-  cp7: number
-  cp8: number
   total: number
   medal: string
 }
@@ -72,14 +68,10 @@ export default function LeaderboardPage() {
 
         // Find column indices
         const nameIdx = headers.findIndex(h => h.toLowerCase().includes('team name'))
-        const cp1Idx = headers.findIndex(h => h.includes('CP1') || h.includes('cp1'))
-        const cp2Idx = headers.findIndex(h => h.includes('CP2') || h.includes('cp2'))
-        const cp3Idx = headers.findIndex(h => h.includes('CP3') || h.includes('cp3'))
-        const cp4Idx = headers.findIndex(h => h.includes('CP4') || h.includes('cp4'))
-        const cp5Idx = headers.findIndex(h => h.includes('CP5') || h.includes('cp5'))
-        const cp6Idx = headers.findIndex(h => h.includes('CP6') || h.includes('cp6'))
-        const cp7Idx = headers.findIndex(h => h.includes('CP7') || h.includes('cp7'))
-        const cp8Idx = headers.findIndex(h => h.includes('CP8') || h.includes('cp8'))
+        const cp1Idx = headers.findIndex(h => h.toLowerCase() === 'cp1')
+        const cp2Idx = headers.findIndex(h => h.toLowerCase() === 'cp2')
+        const cp3Idx = headers.findIndex(h => h.toLowerCase() === 'cp3')
+        const cp4Idx = headers.findIndex(h => h.toLowerCase() === 'cp4')
         const totalIdx = headers.findIndex(h => h.toLowerCase().includes('total'))
 
         // Parse data rows
@@ -94,10 +86,6 @@ export default function LeaderboardPage() {
               cp2: parseInt(values[cp2Idx]) || 0,
               cp3: parseInt(values[cp3Idx]) || 0,
               cp4: parseInt(values[cp4Idx]) || 0,
-              cp5: parseInt(values[cp5Idx]) || 0,
-              cp6: parseInt(values[cp6Idx]) || 0,
-              cp7: parseInt(values[cp7Idx]) || 0,
-              cp8: parseInt(values[cp8Idx]) || 0,
               total: parseInt(values[totalIdx]) || 0,
               medal: ''
             })
@@ -112,6 +100,7 @@ export default function LeaderboardPage() {
 
         setTeams(parsedTeams)
         setLoading(false)
+        setError(null)
       } catch (err) {
         console.error('[v0] Leaderboard fetch error:', err)
         setError('Failed to load leaderboard data')
@@ -120,6 +109,8 @@ export default function LeaderboardPage() {
     }
 
     fetchLeaderboard()
+    const interval = setInterval(fetchLeaderboard, 30000) // Update every 30 seconds
+    return () => clearInterval(interval)
   }, [])
 
   return (
@@ -183,10 +174,6 @@ export default function LeaderboardPage() {
                     <th className="text-center py-4 px-4">CP2</th>
                     <th className="text-center py-4 px-4">CP3</th>
                     <th className="text-center py-4 px-4">CP4</th>
-                    <th className="text-center py-4 px-4">CP5</th>
-                    <th className="text-center py-4 px-4">CP6</th>
-                    <th className="text-center py-4 px-4">CP7</th>
-                    <th className="text-center py-4 px-4">CP8</th>
                     <th className="text-right py-4 px-4">Total</th>
                   </tr>
                 </thead>
@@ -224,10 +211,6 @@ export default function LeaderboardPage() {
                         <td className="text-center py-6 px-4 text-gray-400">{team.cp2}</td>
                         <td className="text-center py-6 px-4 text-gray-400">{team.cp3}</td>
                         <td className="text-center py-6 px-4 text-gray-400">{team.cp4}</td>
-                        <td className="text-center py-6 px-4 text-gray-400">{team.cp5}</td>
-                        <td className="text-center py-6 px-4 text-gray-400">{team.cp6}</td>
-                        <td className="text-center py-6 px-4 text-gray-400">{team.cp7}</td>
-                        <td className="text-center py-6 px-4 text-gray-400">{team.cp8}</td>
                         <td className={`text-right py-6 px-4 text-xl ${getTextGradient(team.rank)}`}>
                           {team.total}
                         </td>
